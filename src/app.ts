@@ -1,11 +1,13 @@
-import express, { Application, Request, Response } from "express";
+import express from "express";
+import menuRoutes from "./routes/menu.routes";
+import offerRoutes from "./routes/offer.routes";
+import restaurantRoutes from "./routes/restaurant.routes";
 
-const app: Application = express();
-
+const app = express();
 app.use(express.json());
 
-app.get("/health", (req: Request, res: Response) => {
-  res.json({ status: "ok" });
-});
+app.use("/restaurants", restaurantRoutes);
+app.use("/menus", menuRoutes);
+app.use("/offers", offerRoutes);
 
 export default app;
