@@ -1,0 +1,159 @@
+{
+  "restaurants": [
+    {
+      "id": 1,
+      "name": "Tasty Bites",
+      "address": "123 Food Street",
+      "menus": [
+        {
+          "id": 101,
+          "name": "Main Menu",
+          "version": 1,
+          "status": "ACTIVE",
+          "categories": [
+            {
+              "id": 201,
+              "name": "Breakfast",
+              "display_order": 1,
+              "items": [
+                {
+                  "id": 301,
+                  "name": "Idli",
+                  "description": "Steamed rice cakes",
+                  "itemPrices": [
+                    {
+                      "id": 401,
+                      "order_type": "DINE_IN",
+                      "price": 50
+                    },
+                    {
+                      "id": 402,
+                      "order_type": "DELIVERY",
+                      "price": 60
+                    }
+                  ],
+                  "addons": [
+                    {
+                      "id": 501,
+                      "name": "Extra Sambar",
+                      "addonGroup": {
+                        "id": 601,
+                        "name": "Sambar Options",
+                        "min_select": 0,
+                        "max_select": 1,
+                        "is_required": false
+                      },
+                      "addonPrice": [
+                        {
+                          "order_type": "DINE_IN",
+                          "price": 10
+                        },
+                        {
+                          "order_type": "DELIVERY",
+                          "price": 15
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": 302,
+                  "name": "Dosa",
+                  "description": "Crispy rice pancake",
+                  "itemPrices": [
+                    {
+                      "id": 403,
+                      "order_type": "DINE_IN",
+                      "price": 80
+                    },
+                    {
+                      "id": 404,
+                      "order_type": "DELIVERY",
+                      "price": 90
+                    }
+                  ],
+                  "addons": []
+                }
+              ]
+            },
+            {
+              "id": 202,
+              "name": "Lunch",
+              "display_order": 2,
+              "items": [
+                {
+                  "id": 303,
+                  "name": "Veg Burger",
+                  "description": "Veggie patty with lettuce",
+                  "itemPrices": [
+                    {
+                      "id": 405,
+                      "order_type": "DINE_IN",
+                      "price": 120
+                    },
+                    {
+                      "id": 406,
+                      "order_type": "DELIVERY",
+                      "price": 140
+                    }
+                  ],
+                  "addons": [
+                    {
+                      "id": 502,
+                      "name": "Extra Cheese",
+                      "addonGroup": {
+                        "id": 602,
+                        "name": "Cheese Options",
+                        "min_select": 0,
+                        "max_select": 2,
+                        "is_required": false
+                      },
+                      "addonPrice": [
+                        {
+                          "order_type": "DINE_IN",
+                          "price": 20
+                        },
+                        {
+                          "order_type": "DELIVERY",
+                          "price": 25
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "offers": [
+        {
+          "id": 701,
+          "name": "Breakfast 10% OFF",
+          "type": "PERCENT",
+          "value": 10,
+          "applicability": {
+            "entity_type": "CATEGORY",
+            "entity_id": 201
+          },
+          "start_time": "07:00",
+          "end_time": "11:00",
+          "is_active": true
+        },
+        {
+          "id": 702,
+          "name": "Veg Burger Discount ₹20",
+          "type": "FLAT",
+          "value": 20,
+          "applicability": {
+            "entity_type": "ITEM",
+            "entity_id": 303
+          },
+          "start_time": "12:00",
+          "end_time": "16:00",
+          "is_active": true
+        }
+      ]
+    }
+  ]
+}
