@@ -15,7 +15,14 @@ export function initItem(sequelize: Sequelize) {
         primaryKey: true,
       },
       category_id: { type: DataTypes.UUID, allowNull: false },
-      time: { type: DataTypes.STRING, allowNull: true }, 
+      available_from: {
+        type: DataTypes.TIME,
+        allowNull: true, 
+      },
+      available_to: {
+        type: DataTypes.TIME,
+        allowNull: true,
+      },
     },
     {
       sequelize,

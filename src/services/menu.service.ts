@@ -1,4 +1,5 @@
 import { sequelize, models } from "../models";
+import { col, Op } from "sequelize";
 
 export const createMenu = async (data: any) => {
   const t = await sequelize.transaction();
@@ -23,10 +24,20 @@ export const createMenu = async (data: any) => {
       );
 
       for (const itm of cat.items) {
+        let availableFrom: string | null = null;
+        let availableTo: string | null = null;
+
+        if (itm.time) {
+          const [from, to] = itm.time.split("-");
+          availableFrom = from || null;
+          availableTo = to || null;
+        }
+
         const item = await models.Item.create(
           {
             category_id: category.category_id,
-            time: itm.time,
+            available_from: availableFrom,
+            available_to: availableTo,
           },
           { transaction: t }
         );
@@ -73,6 +84,54 @@ export const getMenuByRestaurant = async (restaurantId: string) => {
         include: [
           {
             model: models.Item,
+            include: [models.ItemPrice, models.AddOn],
+          },
+        ],
+      },
+    ],
+  });
+};
+
+export const getMenuByRestaurantWithTimeFilter = async (
+  restaurantId: string,
+  time?: string 
+) => {
+  const currentTime = time || new Date().toTimeString().slice(0, 5);
+
+  return models.Menu.findOne({
+    where: { R_ID: restaurantId },
+    include: [
+      {
+        model: models.Category,
+        include: [
+          {
+            model: models.Item,
+            where: {
+              [Op.or]: [
+                {
+                  available_from: null,
+                  available_to: null,
+                },
+
+                {
+                  available_from: { [Op.lte]: currentTime },
+                  available_to: { [Op.gte]: currentTime },
+                },
+
+                {
+                  [Op.and]: [
+                    { available_from: { [Op.gt]: col("available_to") } },
+                    {
+                      [Op.or]: [
+                        { available_from: { [Op.lte]: currentTime } },
+                        { available_to: { [Op.gte]: currentTime } },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            required: false, 
             include: [models.ItemPrice, models.AddOn],
           },
         ],

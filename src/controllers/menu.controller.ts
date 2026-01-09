@@ -13,9 +13,14 @@ export const createMenu = async (req: Request, res: Response) => {
 
 export const getMenuByRestaurant = async (req: Request, res: Response) => {
   try {
-    const menu = await menuService.getMenuByRestaurant(req.params.id);
+    const menu = await menuService.getMenuByRestaurantWithTimeFilter(
+      req.params.id,
+      req.query.time as string
+    );
     res.json(menu);
-  } catch (error) {
+  } catch (err) {
+    console.log(err)
     res.status(500).json({ error: "Failed to fetch menu" });
   }
 };
+
