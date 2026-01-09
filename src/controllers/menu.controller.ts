@@ -14,8 +14,7 @@ export const createMenu = async (req: Request, res: Response) => {
 export const getMenuByRestaurant = async (req: Request, res: Response) => {
   try {
     const menu = await menuService.getMenuByRestaurantWithTimeFilter(
-      req.params.id,
-      req.query.time as string
+      req.params.id
     );
     res.json(menu);
   } catch (err) {
