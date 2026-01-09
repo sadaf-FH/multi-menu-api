@@ -1,6 +1,7 @@
 import { sequelize, models } from "../models";
 import { col, Op } from "sequelize";
 import { DateTime } from "luxon"; 
+import { ERRORS } from "../utils/constants";
 
 export const createMenu = async (data: any) => {
   const t = await sequelize.transaction();
@@ -93,7 +94,7 @@ export const getMenuByRestaurant = async (restaurantId: string) => {
 
 export const getMenuByRestaurantWithTimeFilter = async (restaurantId: string) => {
   const restaurant = await models.Restaurant.findByPk(restaurantId);
-  if (!restaurant) throw new Error("Restaurant not found");
+  if (!restaurant) throw new Error(ERRORS.RESTAURANT_NOT_FOUND);
 
   const tz = restaurant.timezone || "UTC";
   const currentTime = DateTime.utc().setZone(tz).toFormat("HH:mm:ss");

@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import * as menuService from "../services/menu.service";
+import { ERRORS, RESPONSE_CODES } from "../utils/constants";
 
 export const createMenu = async (req: Request, res: Response) => {
   try {
     const result = await menuService.createMenu(req.body);
-    res.status(201).json(result);
+    res.status(RESPONSE_CODES.CREATED).json(result);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to create menu" });
+    res.status(RESPONSE_CODES.INTERNAL_SERVER_ERROR).json({ error: ERRORS.MENU_CREATION_FAILURE });
   }
 };
 
@@ -19,7 +20,7 @@ export const getMenuByRestaurant = async (req: Request, res: Response) => {
     res.json(menu);
   } catch (err) {
     console.log(err)
-    res.status(500).json({ error: "Failed to fetch menu" });
+    res.status(RESPONSE_CODES.INTERNAL_SERVER_ERROR).json({ error: ERRORS.MENU_FETCHING_FAILURE });
   }
 };
 

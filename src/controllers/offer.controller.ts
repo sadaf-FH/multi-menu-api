@@ -1,32 +1,55 @@
 import { Request, Response } from "express";
-import * as offerService from "../services/offer.service";
+import {
+  createOffer,
+  getOffersByItem,
+  getOffersByCategory,
+} from "../services/offer.service";
+import { ERRORS, RESPONSE_CODES } from "../utils/constants";
 
-export const createOffer = async (req: Request, res: Response) => {
+export const createOfferController = async (req: Request, res: Response) => {
   try {
-    const offer = await offerService.createOffer(req.body);
-    res.status(201).json(offer);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to create offer" });
+    const { item_id, category_id, type, amount, max_discount } = req.body;
+
+    const offer = await createOffer({
+      item_id,
+      category_id,
+      type,
+      amount,
+      max_discount,
+    });
+
+    res.status(RESPONSE_CODES.CREATED).json({ success: true, offer });
+  } catch (err: any) {
+    res.status(RESPONSE_CODES.NOT_FOUND_ERROR).json({ success: false, message: err.message });
   }
 };
 
-export const getOffersByCategory = async (req: Request, res: Response) => {
+export const getOffersByItemController = async (req: Request, res: Response) => {
   try {
-    const offers = await offerService.getOffersByCategory(
-      req.params.categoryId
-    );
-    res.json(offers);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch category offers" });
+    const { id } = req.params;
+    const itemPrice = parseFloat(req.query.price as string);
+    if (isNaN(itemPrice)) {
+      return res.status(RESPONSE_CODES.NOT_FOUND_ERROR).json({ success: false, message: ERRORS.PRICE_QUERY_PARAM_NOT_FOUND });
+    }
+
+    const offers = await getOffersByItem(id, itemPrice);
+    res.json({ success: true, offers });
+  } catch (err: any) {
+    res.status(RESPONSE_CODES.NOT_FOUND_ERROR).json({ success: false, message: err.message });
   }
 };
 
-export const getOffersByItem = async (req: Request, res: Response) => {
+export const getOffersByCategoryController = async (req: Request, res: Response) => {
   try {
-    const offers = await offerService.getOffersByItem(req.params.itemId);
-    res.json(offers);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch item offers" });
+    const { id } = req.params;
+    const itemPrice = parseFloat(req.query.price as string);
+    if (isNaN(itemPrice)) {
+      return res.status(RESPONSE_CODES.NOT_FOUND_ERROR).json({ success: false, message: ERRORS.PRICE_QUERY_PARAM_NOT_FOUND });
+    }
+
+    const offers = await getOffersByCategory(id, itemPrice);
+    res.json({ success: true, offers });
+  } catch (err: any) {
+    res.status(RESPONSE_CODES.NOT_FOUND_ERROR).json({ success: false, message: err.message });
   }
 };
