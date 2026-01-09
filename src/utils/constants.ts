@@ -25,8 +25,10 @@ export const ERRORS = {
 export const RESPONSE_CODES = {
     OK: 200, 
     CREATED: 201, 
-    INTERNAL_SERVER_ERROR: 500,
-    NOT_FOUND_ERROR: 400
 };
 
+export const ERROR_CODES = {
+    INTERNAL_SERVER: 500,
+    NOT_FOUND: 400
+}
 
