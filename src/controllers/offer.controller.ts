@@ -1,55 +1,36 @@
 import { Request, Response } from "express";
-import {
-  createOffer,
-  getOffersByItem,
-  getOffersByCategory,
-} from "../services/offer.service";
-import { ERROR_CODES, ERRORS, RESPONSE_CODES } from "../utils/constants";
+import * as OfferService from "../services/offer.service";
+import { ERROR_CODES, RESPONSE_CODES } from "../utils/constants";
 
 export const createOfferController = async (req: Request, res: Response) => {
   try {
-    const { item_id, category_id, type, amount, max_discount } = req.body;
-
-    const offer = await createOffer({
-      item_id,
-      category_id,
-      type,
-      amount,
-      max_discount,
-    });
-
-    res.status(RESPONSE_CODES.CREATED).json({ success: true, offer });
+    const offer = await OfferService.createOffer(req.body);
+    res.status(RESPONSE_CODES.CREATED).json(offer);
   } catch (err: any) {
-    res.status(ERROR_CODES.NOT_FOUND).json({ success: false, message: err.message });
+    res.status(ERROR_CODES.BAD_REQUEST).json({ message: err.message });
   }
 };
 
-export const getOffersByItemController = async (req: Request, res: Response) => {
+export const getOffersByItemController = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const { id } = req.params;
-    const itemPrice = parseFloat(req.query.price as string);
-    if (isNaN(itemPrice)) {
-      return res.status(ERROR_CODES.NOT_FOUND).json({ success: false, message: ERRORS.PRICE_QUERY_PARAM_NOT_FOUND });
-    }
-
-    const offers = await getOffersByItem(id, itemPrice);
-    res.json({ success: true, offers });
+    const offers = await OfferService.getOffersByItem(req.params.id);
+    res.json(offers);
   } catch (err: any) {
-    res.status(ERROR_CODES.NOT_FOUND).json({ success: false, message: err.message });
+    res.status(ERROR_CODES.BAD_REQUEST).json({ message: err.message });
   }
 };
 
-export const getOffersByCategoryController = async (req: Request, res: Response) => {
+export const getOffersByCategoryController = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const { id } = req.params;
-    const itemPrice = parseFloat(req.query.price as string);
-    if (isNaN(itemPrice)) {
-      return res.status(ERROR_CODES.NOT_FOUND).json({ success: false, message: ERRORS.PRICE_QUERY_PARAM_NOT_FOUND });
-    }
-
-    const offers = await getOffersByCategory(id, itemPrice);
-    res.json({ success: true, offers });
+    const offers = await OfferService.getOffersByCategory(req.params.id);
+    res.json(offers);
   } catch (err: any) {
-    res.status(ERROR_CODES.NOT_FOUND).json({ success: false, message: err.message });
+    res.status(ERROR_CODES.BAD_REQUEST).json({ message: err.message });
   }
 };

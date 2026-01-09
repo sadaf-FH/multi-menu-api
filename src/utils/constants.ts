@@ -29,6 +29,7 @@ export const RESPONSE_CODES = {
 
 export const ERROR_CODES = {
     INTERNAL_SERVER: 500,
-    NOT_FOUND: 400
+    BAD_REQUEST: 400,
+    NOT_FOUND: 404
 }
 
