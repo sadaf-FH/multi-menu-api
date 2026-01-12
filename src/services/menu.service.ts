@@ -1,79 +1,29 @@
-import { sequelize } from "../models";
-import { DateTime } from "luxon";
-import {
-  MenuRepository,
-} from "../repositories/menu.repository";
-import {
-  CategoryRepository,
-  ItemRepository,
-  ItemPriceRepository,
-  AddOnRepository,
-} from "../repositories/item.repository";
-import { RestaurantRepository } from "../repositories/restaurant.repository";
+import { MenuDbService } from './db/menu.dbservice';
+import { AppError } from '../errors/AppError';
+import { Errors } from '../errors/error.catalog';
+import { DateTime } from 'luxon';
 
 export const createMenu = async (data: any) => {
-  const t = await sequelize.transaction();
-
   try {
-    const menu = await MenuRepository.create(
-      { R_ID: data.restaurantId, version: data.version },
-      t
-    );
-
-    for (const cat of data.categories) {
-      const category = await CategoryRepository.create(
-        {
-          menu_id: menu.menu_id,
-          name: cat.name,
-          avg_price: cat.avg_price,
-          item_count: cat.items.length,
-        },
-        t
-      );
-
-      for (const itm of cat.items) {
-        const item = await ItemRepository.create(
-          {
-            category_id: category.category_id,
-            available_from: itm.time?.available_from ?? null,
-            available_to: itm.time?.available_to ?? null,
-          },
-          t
-        );
-
-        await ItemPriceRepository.bulkCreate(
-          itm.prices.map((p: any) => ({
-            item_id: item.item_id,
-            order_type: p.order_type,
-            price: p.price,
-          })),
-          t
-        );
-
-        if (itm.addons) {
-          await AddOnRepository.create(
-            { item_id: item.item_id, ...itm.addons },
-            t
-          );
-        }
-      }
-    }
-
-    await t.commit();
+    const menu = await MenuDbService.createMenuWithCategoriesAndItems(data);
     return menu;
-  } catch (err) {
-    await t.rollback();
-    throw err;
+  } catch (err: any) {
+    throw new AppError({
+      key: Errors.MENU_CREATION_FAILURE.key,
+      code: Errors.MENU_CREATION_FAILURE.code,
+      message: err.message || Errors.MENU_CREATION_FAILURE.message,
+    });
   }
 };
 
 export const getMenuWithTimeFilter = async (restaurantId: string) => {
-  const restaurant = await RestaurantRepository.findById(restaurantId);
-  if (!restaurant) throw new Error("Restaurant not found");
+  const restaurant = await MenuDbService.getRestaurantById(restaurantId);
+  if (!restaurant) throw new AppError(Errors.RESTAURANT_NOT_FOUND);
 
-  const currentTime = DateTime.now()
-    .setZone(restaurant.timezone)
-    .toFormat("HH:mm:ss");
+  const currentTime = DateTime.now().setZone(restaurant.timezone).toFormat('HH:mm:ss');
 
-  return MenuRepository.findByRestaurant(restaurantId);
+  const menu = await MenuDbService.getMenuByRestaurant(restaurantId);
+  if (!menu) throw new AppError(Errors.MENU_NOT_FOUND);
+
+  return menu;
 };

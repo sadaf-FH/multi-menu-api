@@ -22,7 +22,7 @@ export function initItemPrice(sequelize: Sequelize) {
       modelName: 'ItemPrice',
       tableName: 'ItemPrices',
       timestamps: true,
-    }
+    },
   );
   return ItemPrice;
 }

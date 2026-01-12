@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { OfferType } from "../utils/constants";
+import { z } from 'zod';
+import { OfferType } from '../utils/constants';
 
 export const createOfferSchema = z
   .object({
@@ -9,12 +9,9 @@ export const createOfferSchema = z
     amount: z.number().positive(),
     max_discount: z.number().positive(),
   })
-  .refine(
-    (data) => data.item_id || data.category_id,
-    {
-      message: "Offer must be linked to item or category",
-    }
-  );
+  .refine((data) => data.item_id || data.category_id, {
+    message: 'Offer must be linked to item or category',
+  });
 
 export const offerParamSchema = z.object({
   id: z.string().uuid(),

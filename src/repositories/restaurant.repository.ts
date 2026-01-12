@@ -1,5 +1,5 @@
-import { models } from "../models";
-import { Restaurant } from "../models/Restaurant";
+import { models } from '../models';
+import { Restaurant } from '../models/Restaurant';
 
 export const RestaurantRepository = {
   create(data: Partial<Restaurant>) {

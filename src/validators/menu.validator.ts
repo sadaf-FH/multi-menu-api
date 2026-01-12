@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { OrderType } from "../utils/constants";
+import { z } from 'zod';
+import { OrderType } from '../utils/constants';
 
 const timeSchema = z.object({
   available_from: z.string().regex(/^\d{2}:\d{2}:\d{2}$/),

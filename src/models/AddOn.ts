@@ -20,7 +20,7 @@ export function initAddOn(sequelize: Sequelize) {
       modelName: 'AddOn',
       tableName: 'AddOns',
       timestamps: true,
-    }
+    },
   );
   return AddOn;
 }

@@ -1,5 +1,5 @@
-import { models, sequelize } from "../models";
-import { Transaction } from "sequelize";
+import { models, sequelize } from '../models';
+import { Transaction } from 'sequelize';
 
 export const MenuRepository = {
   create(data: any, transaction?: Transaction) {

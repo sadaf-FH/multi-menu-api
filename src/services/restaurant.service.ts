@@ -1,5 +1,6 @@
-import { RestaurantRepository } from "../repositories/restaurant.repository";
-import { ERRORS } from "../utils/constants";
+import { RestaurantDbService } from './db/restaurant.dbservice';
+import { AppError } from '../errors/AppError';
+import { Errors } from '../errors/error.catalog';
 
 type CreateRestaurantInput = {
   name: string;
@@ -10,20 +11,23 @@ type CreateRestaurantInput = {
 };
 
 export const createRestaurant = async (data: CreateRestaurantInput) => {
-  return RestaurantRepository.create({
-    name: data.name,
-    franchise: data.franchise ?? null,
-    location: data.location,
-    available: data.available ?? true,
-    timezone: data.timezone ?? "UTC",
-  });
+  try {
+    const restaurant = await RestaurantDbService.createRestaurant(data);
+    return restaurant;
+  } catch (err: any) {
+    throw new AppError({
+      key: Errors.RESTAURANT_CREATION_FAILURE.key,
+      code: Errors.RESTAURANT_CREATION_FAILURE.code,
+      message: err.message || Errors.RESTAURANT_CREATION_FAILURE.message,
+    });
+  }
 };
 
 export const getRestaurantById = async (id: string) => {
-  const restaurant = await RestaurantRepository.findById(id);
+  const restaurant = await RestaurantDbService.getRestaurantById(id);
 
   if (!restaurant) {
-    throw new Error(ERRORS.RESTAURANT_NOT_FOUND);
+    throw new AppError(Errors.RESTAURANT_NOT_FOUND);
   }
 
   return restaurant;

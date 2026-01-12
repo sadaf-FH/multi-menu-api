@@ -1,5 +1,5 @@
-import { models } from "../models";
-import { Transaction } from "sequelize";
+import { models } from '../models';
+import { Transaction } from 'sequelize';
 
 export const CategoryRepository = {
   create(data: any, transaction?: Transaction) {
