@@ -23,7 +23,7 @@ export const createOfferController = asyncHandler(async (req: Request, res: Resp
 
 export const getOffersByItemController = asyncHandler(async (req: Request, res: Response) => {
   const offers = await OfferService.getOffersByItem(req.params.id);
-  console.log(offers)
+  console.log(offers);
   if (!offers || offers.length === 0) {
     throw new AppError(Errors.ITEM_NOT_FOUND);
   }

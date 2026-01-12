@@ -11,49 +11,49 @@ export const MenuRepository = {
     return models.Menu.create(data, { transaction });
   },
 
-async findByRestaurant(restaurantId: string, currentTime: string) {
-  return Menu.findOne({
-    where: { R_ID: restaurantId },
-    include: [
-      {
-        model: Category,
-        include: [
-          {
-            model: Item,
-            required: false,
-            where: {
-              [Op.or]: [
-                // Items without time
-                {
-                  available_from: null,
-                  available_to: null,
-                },
+  async findByRestaurant(restaurantId: string, currentTime: string) {
+    return Menu.findOne({
+      where: { R_ID: restaurantId },
+      include: [
+        {
+          model: Category,
+          include: [
+            {
+              model: Item,
+              required: false,
+              where: {
+                [Op.or]: [
+                  // Items without time
+                  {
+                    available_from: null,
+                    available_to: null,
+                  },
 
-                // Normal same-day window
-                {
-                  available_from: { [Op.lte]: currentTime },
-                  available_to: { [Op.gte]: currentTime },
-                },
+                  // Normal same-day window
+                  {
+                    available_from: { [Op.lte]: currentTime },
+                    available_to: { [Op.gte]: currentTime },
+                  },
 
-                // Overnight window
-                {
-                  [Op.and]: [
-                    { available_from: { [Op.gt]: col('available_to') } },
-                    {
-                      [Op.or]: [
-                        { available_from: { [Op.lte]: currentTime } },
-                        { available_to: { [Op.gte]: currentTime } },
-                      ],
-                    },
-                  ],
-                },
-              ],
+                  // Overnight window
+                  {
+                    [Op.and]: [
+                      { available_from: { [Op.gt]: col('available_to') } },
+                      {
+                        [Op.or]: [
+                          { available_from: { [Op.lte]: currentTime } },
+                          { available_to: { [Op.gte]: currentTime } },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+              include: [ItemPrice, AddOn],
             },
-            include: [ItemPrice, AddOn],
-          },
-        ],
-      },
-    ],
-  });
-}
+          ],
+        },
+      ],
+    });
+  },
 };

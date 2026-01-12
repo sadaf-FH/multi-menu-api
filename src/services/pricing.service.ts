@@ -1,4 +1,4 @@
-import { Offer } from "../models/Offer";
+import { Offer } from '../models/Offer';
 
 export function applyBestOffer(price: number, offers: Offer[]) {
   if (!offers || offers.length === 0) {
@@ -11,7 +11,7 @@ export function applyBestOffer(price: number, offers: Offer[]) {
   for (const offer of offers) {
     let discount = 0;
 
-    if (offer.type === "FLAT") {
+    if (offer.type === 'FLAT') {
       discount = offer.amount;
     } else {
       discount = (price * offer.amount) / 100;

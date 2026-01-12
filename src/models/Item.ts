@@ -1,6 +1,6 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
-import { ItemPrice } from "./ItemPrice";
-import { AddOn } from "./AddOn";
+import { ItemPrice } from './ItemPrice';
+import { AddOn } from './AddOn';
 
 export class Item extends Model {
   declare category_id: string;

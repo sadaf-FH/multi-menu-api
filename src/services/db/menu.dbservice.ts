@@ -7,7 +7,7 @@ import {
 } from '../../repositories/item.repository';
 import { RestaurantRepository } from '../../repositories/restaurant.repository';
 import { sequelize } from '../../models';
-import { DateTime } from "luxon"; 
+import { DateTime } from 'luxon';
 
 export const MenuDbService = {
   async createMenuWithCategoriesAndItems(menuData: any) {
@@ -63,9 +63,9 @@ export const MenuDbService = {
     }
   },
 
-async getMenuByRestaurant(restaurantId: string, currentTime: string) {
-  return MenuRepository.findByRestaurant(restaurantId, currentTime);
-},
+  async getMenuByRestaurant(restaurantId: string, currentTime: string) {
+    return MenuRepository.findByRestaurant(restaurantId, currentTime);
+  },
 
   async getRestaurantById(restaurantId: string) {
     return RestaurantRepository.findById(restaurantId);
