@@ -26,7 +26,7 @@ export function initCategory(sequelize: Sequelize) {
       modelName: 'Category',
       tableName: 'Categories',
       timestamps: true,
-    }
+    },
   );
   return Category;
 }

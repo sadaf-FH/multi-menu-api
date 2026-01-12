@@ -7,7 +7,6 @@ export class Item extends Model {
   declare available_to: string | null;
 }
 
-
 export function initItem(sequelize: Sequelize) {
   Item.init(
     {
@@ -19,7 +18,7 @@ export function initItem(sequelize: Sequelize) {
       category_id: { type: DataTypes.UUID, allowNull: false },
       available_from: {
         type: DataTypes.TIME,
-        allowNull: true, 
+        allowNull: true,
       },
       available_to: {
         type: DataTypes.TIME,
@@ -31,7 +30,7 @@ export function initItem(sequelize: Sequelize) {
       modelName: 'Item',
       tableName: 'Items',
       timestamps: true,
-    }
+    },
   );
   return Item;
 }

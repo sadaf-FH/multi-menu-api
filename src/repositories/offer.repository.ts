@@ -1,5 +1,5 @@
-import { models } from "../models";
-import { Offer } from "../models/Offer";
+import { models } from '../models';
+import { Offer } from '../models/Offer';
 
 export const OfferRepository = {
   create: async (data: Partial<Offer>) => {

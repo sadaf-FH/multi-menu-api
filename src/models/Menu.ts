@@ -26,7 +26,7 @@ export function initMenu(sequelize: Sequelize) {
       modelName: 'Menu',
       tableName: 'Menus',
       timestamps: true,
-    }
+    },
   );
 
   // Associations
