@@ -37,7 +37,7 @@ function inactiveWindow() {
     const active = activeWindow();
     const inactive = inactiveWindow();
 
-    const menuRes = await axios.post(`${API}/menus`, {
+    await axios.post(`${API}/menus`, {
       restaurantId,
       version: 1,
       categories: [
@@ -73,6 +73,9 @@ function inactiveWindow() {
     const menuFetch = await axios.get(`${API}/menus/restaurant/${restaurantId}`);
     const menu = menuFetch.data.data;
 
+    console.log("\nMenu BEFORE offers (time filtered):");
+    console.dir(menu, { depth: 6 });
+
     const italianCategory = menu.Categories.find(c => c.name === "Italian");
     const chineseCategory = menu.Categories.find(c => c.name === "Chinese");
 
@@ -82,37 +85,41 @@ function inactiveWindow() {
     console.log("Italian item:", italianItem.item_id);
     console.log("Chinese item:", chineseItem.item_id);
 
-    const itemOffer = await axios.post(`${API}/offers`, {
+    await axios.post(`${API}/offers`, {
       item_id: italianItem.item_id,
       type: "PERCENT",
       amount: 20,
       max_discount: 100,
     });
 
-    console.log("Item offer created:", itemOffer.data.data.id);
-
-    const categoryOffer = await axios.post(`${API}/offers`, {
+    await axios.post(`${API}/offers`, {
       category_id: chineseCategory.category_id,
       type: "FLAT",
       amount: 50,
       max_discount: 50,
     });
 
-    console.log("Category offer created:", categoryOffer.data.data.id);
-
-    const itemOffers = await axios.get(
-      `${API}/offers/item/${italianItem.item_id}`
+    const finalMenuRes = await axios.get(
+      `${API}/menus/restaurant/${restaurantId}`
     );
 
-    console.log("\nOffers for Italian item:");
-    console.dir(itemOffers.data.data, { depth: 5 });
+    const finalMenu = finalMenuRes.data.data;
 
-    const categoryOffers = await axios.get(
-      `${API}/offers/category/${chineseCategory.category_id}`
-    );
-
-    console.log("\nOffers for Chinese category:");
-    console.dir(categoryOffers.data.data, { depth: 5 });
+    console.log("\nMenu AFTER offers:");
+    for (const category of finalMenu.Categories) {
+      console.log(`\nCategory: ${category.name}`);
+      for (const item of category.Items) {
+        for (const price of item.ItemPrices) {
+          console.log({
+            item_id: item.item_id,
+            base_price: price.base_price,
+            final_price: price.final_price,
+            discount: price.discount,
+            applied_offer: price.applied_offer,
+          });
+        }
+      }
+    }
 
     console.log("\nFull flow test completed successfully");
 

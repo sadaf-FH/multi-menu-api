@@ -5,17 +5,18 @@ import { ApiResponseBuilder } from '../utils/apiResponse';
 import { asyncHandler } from '../middlewares/asyncHandler.middleware';
 import { AppError } from '../errors/AppError';
 import { Errors } from '../errors/error.catalog';
+import { Success } from '../utils/success.catalog';
 
 export const createRestaurant = asyncHandler(async (req: Request, res: Response) => {
   const restaurant = await RestaurantService.createRestaurant(req.body);
 
   return res
-    .status(RESPONSE_CODES.CREATED)
+    .status(Success.RESTAURANT_CREATED.code)
     .json(
       new ApiResponseBuilder<typeof restaurant>()
-        .success('Restaurant created successfully')
+        .success(Success.RESTAURANT_CREATED.message)
         .withData(restaurant)
-        .withCode(RESPONSE_CODES.CREATED)
+        .withCode(Success.RESTAURANT_CREATED.code)
         .build(),
     );
 });
@@ -29,9 +30,9 @@ export const getRestaurantById = asyncHandler(async (req: Request, res: Response
 
   return res.json(
     new ApiResponseBuilder<typeof restaurant>()
-      .success('Restaurant fetched successfully')
+      .success(Success.RESTAURANT_FETCHED.message)
       .withData(restaurant)
-      .withCode(RESPONSE_CODES.OK)
+      .withCode(Success.RESTAURANT_FETCHED.code)
       .build(),
   );
 });

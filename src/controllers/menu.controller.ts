@@ -5,15 +5,16 @@ import { ApiResponseBuilder } from '../utils/apiResponse';
 import { asyncHandler } from '../middlewares/asyncHandler.middleware';
 import { AppError } from '../errors/AppError';
 import { Errors } from '../errors/error.catalog';
+import { Success } from '../utils/success.catalog';
 
 export const createMenu = asyncHandler(async (req: Request, res: Response) => {
   const menu = await MenuService.createMenu(req.body);
 
   return res
-    .status(RESPONSE_CODES.CREATED)
+    .status(Success.MENU_CREATED.code)
     .json(
       new ApiResponseBuilder<typeof menu>()
-        .success('Menu created successfully')
+        .success(Success.MENU_CREATED.message)
         .withData(menu)
         .withCode(RESPONSE_CODES.CREATED)
         .build(),
@@ -29,9 +30,9 @@ export const getMenuByRestaurant = asyncHandler(async (req: Request, res: Respon
 
   return res.json(
     new ApiResponseBuilder<typeof menu>()
-      .success('Menu fetched successfully')
+      .success(Success.MENU_FETCHED.message)
       .withData(menu)
-      .withCode(RESPONSE_CODES.OK)
+      .withCode(Success.MENU_FETCHED.code)
       .build(),
   );
 });

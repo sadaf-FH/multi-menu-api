@@ -1,11 +1,14 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
-
+import { Item } from './Item';
+import { Menu } from './Menu';
 export class Category extends Model {
   declare menu_id: string;
   declare category_id: string;
   declare name: string;
   declare avg_price: number;
   declare item_count: number;
+  declare Items?: Item[];
+  declare Menu?: Menu;
 }
 
 export function initCategory(sequelize: Sequelize) {
