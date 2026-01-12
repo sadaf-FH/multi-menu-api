@@ -1,10 +1,12 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 import { Restaurant } from './Restaurant';
+import { Category } from './Category';
 
 export class Menu extends Model {
   declare menu_id: string;
   declare R_ID: string;
   declare version: number;
+  declare Categories?: Category[];
 }
 
 export function initMenu(sequelize: Sequelize) {

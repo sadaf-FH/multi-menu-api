@@ -1,4 +1,4 @@
-export const Successes = {
+export const Success = {
   MENU_CREATED: {
     code: 201,
     key: 'MENU_CREATED',

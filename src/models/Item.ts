@@ -1,10 +1,14 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
+import { ItemPrice } from "./ItemPrice";
+import { AddOn } from "./AddOn";
 
 export class Item extends Model {
   declare category_id: string;
   declare item_id: string;
   declare available_from: string | null;
   declare available_to: string | null;
+  declare ItemPrices?: ItemPrice[];
+  declare AddOn?: AddOn;
 }
 
 export function initItem(sequelize: Sequelize) {

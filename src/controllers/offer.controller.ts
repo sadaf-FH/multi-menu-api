@@ -5,17 +5,18 @@ import { ApiResponseBuilder } from '../utils/apiResponse';
 import { asyncHandler } from '../middlewares/asyncHandler.middleware';
 import { AppError } from '../errors/AppError';
 import { Errors } from '../errors/error.catalog';
+import { Success } from '../utils/success.catalog';
 
 export const createOfferController = asyncHandler(async (req: Request, res: Response) => {
   const offer = await OfferService.createOffer(req.body);
 
   return res
-    .status(RESPONSE_CODES.CREATED)
+    .status(Success.OFFER_CREATED.code)
     .json(
       new ApiResponseBuilder<typeof offer>()
-        .success('Offer created successfully')
+        .success(Success.OFFER_CREATED.message)
         .withData(offer)
-        .withCode(RESPONSE_CODES.CREATED)
+        .withCode(Success.OFFER_CREATED.code)
         .build(),
     );
 });
@@ -29,9 +30,9 @@ export const getOffersByItemController = asyncHandler(async (req: Request, res: 
 
   return res.json(
     new ApiResponseBuilder<typeof offers>()
-      .success('Offers fetched successfully')
+      .success(Success.OFFER_FETCHED.message)
       .withData(offers)
-      .withCode(RESPONSE_CODES.OK)
+      .withCode(Success.OFFER_CREATED.code)
       .build(),
   );
 });
@@ -45,9 +46,9 @@ export const getOffersByCategoryController = asyncHandler(async (req: Request, r
 
   return res.json(
     new ApiResponseBuilder<typeof offers>()
-      .success('Offers fetched successfully')
+      .success(Success.OFFER_FETCHED.message)
       .withData(offers)
-      .withCode(RESPONSE_CODES.OK)
+      .withCode(Success.OFFER_FETCHED.code)
       .build(),
   );
 });
