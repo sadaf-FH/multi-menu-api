@@ -22,15 +22,27 @@ export const models = {
   Offer: initOffer(sequelize),
 };
 
+models.Restaurant.hasMany(models.Menu, { foreignKey: 'R_ID' });
 models.Menu.belongsTo(models.Restaurant, { foreignKey: 'R_ID' });
+
+models.Menu.hasMany(models.Category, { foreignKey: 'menu_id' });
 models.Category.belongsTo(models.Menu, { foreignKey: 'menu_id' });
+
+models.Category.hasMany(models.Item, { foreignKey: 'category_id' });
 models.Item.belongsTo(models.Category, { foreignKey: 'category_id' });
+
+models.Item.hasMany(models.ItemPrice, { foreignKey: 'item_id' });
 models.ItemPrice.belongsTo(models.Item, { foreignKey: 'item_id' });
+
+models.Item.hasOne(models.AddOn, { foreignKey: 'item_id' });
 models.AddOn.belongsTo(models.Item, { foreignKey: 'item_id' });
+
+models.Item.hasMany(models.Offer, { foreignKey: 'item_id' });
+models.Category.hasMany(models.Offer, { foreignKey: 'category_id' });
 models.Offer.belongsTo(models.Item, { foreignKey: 'item_id' });
 models.Offer.belongsTo(models.Category, { foreignKey: 'category_id' });
 
 export const syncDB = async () => {
-  await sequelize.sync({ force: true });
+  await sequelize.sync({ alter: true });
   console.log('All tables synced!');
 };
