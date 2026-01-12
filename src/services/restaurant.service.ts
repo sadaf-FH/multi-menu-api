@@ -1,10 +1,5 @@
 import { models } from "../models";
-
-type CreateRestaurantInput = {
-  name: string;
-  franchise?: string;
-  location: string;
-};
+import { CreateRestaurantInput } from "../utils/types";
 
 export const createRestaurant = async (data: CreateRestaurantInput) => {
   return models.Restaurant.create({
@@ -12,5 +7,6 @@ export const createRestaurant = async (data: CreateRestaurantInput) => {
     franchise: data.franchise ?? null,
     location: data.location,
     available: true,
+    timezone: data.timezone
   });
 };

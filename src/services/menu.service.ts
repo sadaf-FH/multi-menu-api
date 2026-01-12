@@ -1,5 +1,7 @@
 import { sequelize, models } from "../models";
 import { col, Op } from "sequelize";
+import { DateTime } from "luxon"; 
+import { ERRORS } from "../utils/constants";
 
 export const createMenu = async (data: any) => {
   const t = await sequelize.transaction();
@@ -26,11 +28,9 @@ export const createMenu = async (data: any) => {
       for (const itm of cat.items) {
         let availableFrom: string | null = null;
         let availableTo: string | null = null;
-
         if (itm.time) {
-          const [from, to] = itm.time.split("-");
-          availableFrom = from || null;
-          availableTo = to || null;
+          availableFrom = itm.time.available_from || null;
+          availableTo = itm.time.available_to || null;
         }
 
         const item = await models.Item.create(
@@ -92,11 +92,12 @@ export const getMenuByRestaurant = async (restaurantId: string) => {
   });
 };
 
-export const getMenuByRestaurantWithTimeFilter = async (
-  restaurantId: string,
-  time?: string 
-) => {
-  const currentTime = time || new Date().toTimeString().slice(0, 5);
+export const getMenuByRestaurantWithTimeFilter = async (restaurantId: string) => {
+  const restaurant = await models.Restaurant.findByPk(restaurantId);
+  if (!restaurant) throw new Error(ERRORS.RESTAURANT_NOT_FOUND);
+
+  const tz = restaurant.timezone || "UTC";
+  const currentTime = DateTime.utc().setZone(tz).toFormat("HH:mm:ss");
 
   return models.Menu.findOne({
     where: { R_ID: restaurantId },
@@ -112,12 +113,10 @@ export const getMenuByRestaurantWithTimeFilter = async (
                   available_from: null,
                   available_to: null,
                 },
-
                 {
                   available_from: { [Op.lte]: currentTime },
                   available_to: { [Op.gte]: currentTime },
                 },
-
                 {
                   [Op.and]: [
                     { available_from: { [Op.gt]: col("available_to") } },
@@ -131,7 +130,7 @@ export const getMenuByRestaurantWithTimeFilter = async (
                 },
               ],
             },
-            required: false, 
+            required: false,
             include: [models.ItemPrice, models.AddOn],
           },
         ],

@@ -1,14 +1,16 @@
 import { Router } from "express";
 import {
-  createOffer,
-  getOffersByCategory,
-  getOffersByItem,
+  createOfferController,
+  getOffersByItemController,
+  getOffersByCategoryController,
 } from "../controllers/offer.controller";
 
 const router = Router();
 
-router.post("/", createOffer);
-router.get("/category/:categoryId", getOffersByCategory);
-router.get("/item/:itemId", getOffersByItem);
+router.post("/offers", createOfferController);
+
+router.get("/offers/item/:id", getOffersByItemController);
+
+router.get("/offers/category/:id", getOffersByCategoryController);
 
 export default router;
