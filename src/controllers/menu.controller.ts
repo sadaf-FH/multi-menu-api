@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import * as MenuService from '../services/menu.service';
 import { RESPONSE_CODES } from '../utils/constants';
 import { ApiResponseBuilder } from '../utils/apiResponse';
-import { asyncHandler } from '../utils/asyncHandler';
+import { asyncHandler } from '../middlewares/asyncHandler.middleware';
 import { AppError } from '../errors/AppError';
 import { Errors } from '../errors/error.catalog';
 
