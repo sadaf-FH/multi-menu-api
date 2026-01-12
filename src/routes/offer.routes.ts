@@ -13,19 +13,17 @@ import {
 
 const router = Router();
 
-router.post('/offers', validate(createOfferSchema), createOfferController);
+router.post('/', validate(createOfferSchema), createOfferController);
 
 router.get(
-  '/offers/item/:id',
+  '/item/:id',
   validate(offerParamSchema, 'params'),
-  validate(offerQuerySchema, 'query'),
   getOffersByItemController,
 );
 
 router.get(
-  '/offers/category/:id',
+  '/category/:id',
   validate(offerParamSchema, 'params'),
-  validate(offerQuerySchema, 'query'),
   getOffersByCategoryController,
 );
 
