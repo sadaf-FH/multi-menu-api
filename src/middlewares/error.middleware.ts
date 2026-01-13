@@ -1,28 +1,35 @@
-import { Request, Response, NextFunction } from 'express';
-import { ApiResponseBuilder } from '../utils/apiResponse';
-import { AppError } from '../errors/AppError';
-import { Errors } from '../errors/error.catalog';
+import { Request, Response, NextFunction } from "express";
+import { AppError } from "../errors/AppError";
+import { ValidationError, ValidationErrorItem } from "sequelize";
 
-export const errorMiddleware = (err: Error, req: Request, res: Response, next: NextFunction) => {
+export function errorHandler(
+  err: unknown,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  console.error("ERROR:", err);
+
   if (err instanceof AppError) {
-    return res
-      .status(err.code)
-      .json(
-        new ApiResponseBuilder()
-          .failure(err.message)
-          .withCode(err.code)
-          .withMeta({ key: err.key })
-          .build(),
-      );
+    return res.status(err.code || 400).json({
+      success: false,
+      key: err.key,
+      code: err.code,
+      message: err.message,
+    });
   }
 
-  return res
-    .status(500)
-    .json(
-      new ApiResponseBuilder()
-        .failure(Errors.INTERNAL_SERVER_ERROR.message)
-        .withCode(500)
-        .withMeta({ key: Errors.INTERNAL_SERVER_ERROR.key })
-        .build(),
-    );
-};
+  if (err instanceof ValidationError) {
+    return res.status(400).json({
+      success: false,
+      code: "VALIDATION_ERROR",
+      message: err.errors.map((e: ValidationErrorItem) => e.message).join(", "),
+    });
+  }
+
+  return res.status(500).json({
+    success: false,
+    code: "INTERNAL_SERVER_ERROR",
+    message: "Something went wrong",
+  });
+}
