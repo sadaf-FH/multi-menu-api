@@ -23,7 +23,10 @@ export const OfferDbService = {
   async getOffersByItem(itemId: string) {
     const [{ timezone }] = await MenuDbService.getTimezoneForItem(itemId);
 
-    const time = DateTime.now().setZone(timezone).toFormat('HH:mm:ss');
+    const time = DateTime.now()
+    .setZone(timezone)
+    .toFormat("HH:mm:ss");
+
     return OfferRepository.findByItemId(itemId, time);
   },
 
