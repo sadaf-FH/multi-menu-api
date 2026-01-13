@@ -14,3 +14,7 @@ export type CreateOfferInput = {
   amount: number;
   max_discount: number;
 };
+
+export type ItemTimezoneRow = {
+  timezone: string;
+};

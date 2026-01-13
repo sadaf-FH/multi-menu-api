@@ -1,5 +1,7 @@
+import { DateTime } from 'luxon';
 import { OfferRepository } from '../../repositories/offer.repository';
 import { OfferType } from '../../utils/constants';
+import { MenuDbService } from './menu.dbservice';
 
 export const OfferDbService = {
   async createOffer(data: {
@@ -19,7 +21,10 @@ export const OfferDbService = {
   },
 
   async getOffersByItem(itemId: string) {
-    return OfferRepository.findByItemId(itemId);
+    const [{ timezone }] = await MenuDbService.getTimezoneForItem(itemId);
+
+    const time = DateTime.now().setZone(timezone).toFormat('HH:mm:ss');
+    return OfferRepository.findByItemId(itemId, time);
   },
 
   async getOffersByCategory(categoryId: string) {
