@@ -15,8 +15,8 @@ export const Errors = {
 
   VALIDATION_ERROR: {
     key: 'VALIDATION_ERROR',
-    code: 400, 
-    message: 'Bad Request Error'
+    code: 400,
+    message: 'Bad Request Error',
   },
 
   MENU_NOT_FOUND: {
