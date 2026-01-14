@@ -8,6 +8,7 @@ export class Item extends Model {
   declare available_from: string | null;
   declare available_to: string | null;
   declare ItemPrices?: ItemPrice[];
+  declare name?: string;
   declare AddOn?: AddOn;
 }
 
@@ -28,6 +29,10 @@ export function initItem(sequelize: Sequelize) {
         type: DataTypes.TIME,
         allowNull: true,
       },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      }
     },
     {
       sequelize,

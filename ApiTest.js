@@ -46,10 +46,12 @@ function inactiveWindow() {
           avg_price: 200,
           items: [
             {
+              name: "Pizza Margherita",        // ✅ FIXED
               time: active,
               prices: [{ order_type: "DINE_IN", price: 300 }],
             },
             {
+              name: "Pasta Alfredo",           // ✅ FIXED
               time: inactive,
               prices: [{ order_type: "DINE_IN", price: 250 }],
             },
@@ -60,6 +62,7 @@ function inactiveWindow() {
           avg_price: 150,
           items: [
             {
+              name: "Hakka Noodles",            // ✅ FIXED
               time: active,
               prices: [{ order_type: "DINE_IN", price: 180 }],
             },
@@ -82,8 +85,8 @@ function inactiveWindow() {
     const italianItem = italianCategory.Items[0];
     const chineseItem = chineseCategory.Items[0];
 
-    console.log("Italian item:", italianItem.item_id);
-    console.log("Chinese item:", chineseItem.item_id);
+    console.log("Italian item:", italianItem.item_id, italianItem.name);
+    console.log("Chinese item:", chineseItem.item_id, chineseItem.name);
 
     await axios.post(`${API}/offers`, {
       item_id: italianItem.item_id,
@@ -111,6 +114,7 @@ function inactiveWindow() {
       for (const item of category.Items) {
         for (const price of item.ItemPrices) {
           console.log({
+            item: item.name,              // ✅ now reliable
             item_id: item.item_id,
             base_price: price.base_price,
             final_price: price.final_price,

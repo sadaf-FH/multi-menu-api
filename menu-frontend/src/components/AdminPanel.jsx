@@ -65,20 +65,7 @@ const AdminPanel = ({ onSuccess }) => {
   const loadMenu = async (restaurantId) => {
     try {
       const response = await getMenuByRestaurant(restaurantId);
-      
-      const menuWithNames = { ...response.data };
-      if (menuWithNames.Categories) {
-        menuWithNames.Categories.forEach(category => {
-          if (category.Items) {
-            category.Items.forEach((item, idx) => {
-              const storedName = localStorage.getItem(`item_name_${item.item_id}`);
-              item.name = storedName || `${category.name} Item ${idx + 1}`;
-            });
-          }
-        });
-      }
-      
-      setMenuData(menuWithNames);
+      setMenuData(response.data);
     } catch (error) {
       setMenuData(null);
     }
@@ -169,6 +156,7 @@ const AdminPanel = ({ onSuccess }) => {
           name: cat.name,
           avg_price: cat.avg_price,
           items: cat.items.map(item => ({
+            name: item.name,                 
             time: {
               available_from: toTimeFormat(item.available_from),
               available_to: toTimeFormat(item.available_to)
@@ -179,23 +167,6 @@ const AdminPanel = ({ onSuccess }) => {
       };
 
       await createMenu(menuPayload);
-      
-      const menuResponse = await getMenuByRestaurant(selectedRestaurant.id);
-      const createdMenu = menuResponse.data;
-      
-      if (createdMenu.Categories) {
-        createdMenu.Categories.forEach((createdCategory, catIdx) => {
-          const originalCategory = categories[catIdx];
-          if (createdCategory.Items && originalCategory) {
-            createdCategory.Items.forEach((createdItem, itemIdx) => {
-              const originalItem = originalCategory.items[itemIdx];
-              if (originalItem && originalItem.name) {
-                localStorage.setItem(`item_name_${createdItem.item_id}`, originalItem.name);
-              }
-            });
-          }
-        });
-      }
 
       setMessage({ type: 'success', text: 'Menu created successfully' });
       await loadMenu(selectedRestaurant.id);
