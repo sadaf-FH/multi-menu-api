@@ -78,13 +78,6 @@ const RestaurantSelector = ({ onSelect }) => {
             </button>
           </div>
         </form>
-
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-          <p className="text-sm text-gray-600 leading-relaxed">
-            <span className="font-medium text-gray-900">Tip:</span> Use the Admin Panel to create restaurants and menus. 
-            All your restaurants are automatically saved here.
-          </p>
-        </div>
       </div>
     </div>
   );
