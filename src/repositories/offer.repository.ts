@@ -12,10 +12,7 @@ export const OfferRepository = {
       where: {
         item_id: itemId,
         [Op.or]: [
-          {
-            available_from: null,
-            available_to: null,
-          },
+          { available_from: null, available_to: null },
           {
             available_from: { [Op.lte]: time },
             available_to: { [Op.gte]: time },
@@ -24,10 +21,19 @@ export const OfferRepository = {
       },
     });
   },
-
-  findByCategoryId: async (categoryId: string) => {
+  
+  findByCategoryId(categoryId: string, time: string) {
     return models.Offer.findAll({
-      where: { category_id: categoryId },
+      where: {
+        category_id: categoryId,
+        [Op.or]: [
+          { available_from: null, available_to: null },
+          {
+            available_from: { [Op.lte]: time },
+            available_to: { [Op.gte]: time },
+          },
+        ],
+      },
     });
   },
 };

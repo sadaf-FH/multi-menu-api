@@ -65,7 +65,7 @@ export const MenuDbService = {
     }
   },
 
-  async getTimezoneForItem(itemId: string): Promise<ItemTimezoneRow[]>  {
+  async getTimezoneForItem(itemId: string): Promise<ItemTimezoneRow[]> {
     return sequelize.query(
       `
         SELECT r.timezone

@@ -16,17 +16,17 @@ function App() {
           setShowAdmin(!showAdmin);
           setSelectedRestaurant(null);
         }}
-        className="fixed top-6 right-6 z-50 flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-rust to-olive text-cream rounded-xl shadow-lg hover:shadow-xl transition-all hover-lift"
+        className="fixed top-6 right-6 z-50 flex items-center gap-2 px-5 py-3 bg-red-600 text-white rounded-xl shadow-lg hover:bg-red-700 transition-all font-medium"
       >
         {showAdmin ? (
           <>
             <Eye className="w-5 h-5" />
-            <span className="font-semibold">View Menu</span>
+            <span className="hidden sm:inline">View Menu</span>
           </>
         ) : (
           <>
             <Settings className="w-5 h-5" />
-            <span className="font-semibold">Admin Panel</span>
+            <span className="hidden sm:inline">Admin Panel</span>
           </>
         )}
       </button>

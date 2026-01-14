@@ -6,7 +6,6 @@ type CreateRestaurantInput = {
   name: string;
   franchise?: string | null;
   location: string;
-  available?: boolean;
   timezone?: string;
 };
 
