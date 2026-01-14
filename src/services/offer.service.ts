@@ -2,6 +2,8 @@ import { OfferDbService } from './db/offer.dbservice';
 import { AppError } from '../errors/AppError';
 import { Errors } from '../errors/error.catalog';
 import { OfferType } from '../utils/constants';
+import { MenuDbService } from './db/menu.dbservice';
+import { DateTime } from 'luxon';
 
 type CreateOfferInput = {
   item_id?: string;
@@ -9,6 +11,8 @@ type CreateOfferInput = {
   type: OfferType;
   amount: number;
   max_discount?: number;
+  available_from: string;
+  available_to: string;
 };
 
 export const createOffer = async (data: CreateOfferInput) => {
@@ -30,23 +34,53 @@ export const createOffer = async (data: CreateOfferInput) => {
     type: data.type,
     amount: data.amount,
     max_discount: data.max_discount,
+    available_from: data.available_from,
+    available_to: data.available_to
   });
 
   return offer;
 };
 
-export const getOffersByItem = async (itemId: string) => {
-  const offers = await OfferDbService.getOffersByItem(itemId);
+export const getOffersByItem = async (itemId: string, restaurantId: string) => {
+  const restaurant = await MenuDbService.getRestaurantById(restaurantId);
+  if (!restaurant) throw new AppError(Errors.RESTAURANT_NOT_FOUND);
+
+  const currentTime = DateTime
+    .now()
+    .setZone(restaurant.timezone)
+    .toFormat("HH:mm:ss");
+
+  const offers = await OfferDbService.getOffersByItem(itemId, currentTime);
+
   if (!offers || offers.length === 0) {
-    throw new AppError(Errors.ITEM_NOT_FOUND);
+    throw new AppError(Errors.OFFER_NOT_FOUND);
   }
+
   return offers;
 };
 
-export const getOffersByCategory = async (categoryId: string) => {
-  const offers = await OfferDbService.getOffersByCategory(categoryId);
+
+export const getOffersByCategory = async (
+  categoryId: string,
+  restaurantId: string
+) => {
+  const restaurant = await MenuDbService.getRestaurantById(restaurantId);
+  if (!restaurant) throw new AppError(Errors.RESTAURANT_NOT_FOUND);
+
+  const currentTime = DateTime
+    .now()
+    .setZone(restaurant.timezone)
+    .toFormat("HH:mm:ss");
+
+  const offers = await OfferDbService.getOffersByCategory(
+    categoryId,
+    currentTime
+  );
+
   if (!offers || offers.length === 0) {
-    throw new AppError(Errors.CATEGORY_NOT_FOUND);
+    throw new AppError(Errors.OFFER_NOT_FOUND);
   }
+
   return offers;
 };
+

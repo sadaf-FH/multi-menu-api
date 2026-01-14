@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import * as OfferService from '../services/offer.service';
-import { RESPONSE_CODES } from '../utils/constants';
 import { ApiResponseBuilder } from '../utils/apiResponse';
 import { asyncHandler } from '../middlewares/asyncHandler.middleware';
 import { AppError } from '../errors/AppError';
 import { Errors } from '../errors/error.catalog';
 import { Success } from '../utils/success.catalog';
+import { RestaurantRepository } from '../repositories/restaurant.repository';
 
 export const createOfferController = asyncHandler(async (req: Request, res: Response) => {
   const offer = await OfferService.createOffer(req.body);
@@ -22,8 +22,10 @@ export const createOfferController = asyncHandler(async (req: Request, res: Resp
 });
 
 export const getOffersByItemController = asyncHandler(async (req: Request, res: Response) => {
-  const offers = await OfferService.getOffersByItem(req.params.id);
-  console.log(offers);
+  const restaurant = await RestaurantRepository.findByItemId(req.params.id);
+  if (!restaurant) throw new AppError(Errors.RESTAURANT_NOT_FOUND); 
+  const offers = await OfferService.getOffersByItem(req.params.id, restaurant.R_ID);
+
   if (!offers || offers.length === 0) {
     throw new AppError(Errors.ITEM_NOT_FOUND);
   }
@@ -38,7 +40,9 @@ export const getOffersByItemController = asyncHandler(async (req: Request, res: 
 });
 
 export const getOffersByCategoryController = asyncHandler(async (req: Request, res: Response) => {
-  const offers = await OfferService.getOffersByCategory(req.params.id);
+  const restaurant = await RestaurantRepository.findByCategoryId(req.params.id);
+  if (!restaurant) throw new AppError(Errors.CATEGORY_NOT_FOUND);
+  const offers = await OfferService.getOffersByCategory(req.params.id, restaurant.R_ID);
 
   if (!offers || offers.length === 0) {
     throw new AppError(Errors.CATEGORY_NOT_FOUND);

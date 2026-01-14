@@ -8,6 +8,8 @@ import {
 import { RestaurantRepository } from '../../repositories/restaurant.repository';
 import { sequelize } from '../../models';
 import { DateTime } from 'luxon';
+import { QueryTypes } from 'sequelize';
+import { ItemTimezoneRow } from '../../utils/types';
 
 export const MenuDbService = {
   async createMenuWithCategoriesAndItems(menuData: any) {
@@ -61,6 +63,24 @@ export const MenuDbService = {
       await t.rollback();
       throw err;
     }
+  },
+
+  async getTimezoneForItem(itemId: string): Promise<ItemTimezoneRow[]> {
+    return sequelize.query(
+      `
+        SELECT r.timezone
+        FROM Items i
+        JOIN Categories c ON i.category_id = c.category_id
+        JOIN Menus m ON c.menu_id = m.menu_id
+        JOIN Restaurants r ON m.R_ID = r.R_ID
+        WHERE i.item_id = :itemId
+        LIMIT 1
+    `,
+      {
+        replacements: { itemId },
+        type: QueryTypes.SELECT,
+      },
+    );
   },
 
   async getMenuByRestaurant(restaurantId: string, currentTime: string) {

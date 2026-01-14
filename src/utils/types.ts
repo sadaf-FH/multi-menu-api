@@ -5,6 +5,7 @@ export type CreateRestaurantInput = {
   franchise?: string;
   location: string;
   timezone: string;
+  available?: boolean;
 };
 
 export type CreateOfferInput = {
@@ -13,4 +14,8 @@ export type CreateOfferInput = {
   type: OfferType;
   amount: number;
   max_discount: number;
+};
+
+export type ItemTimezoneRow = {
+  timezone: string;
 };

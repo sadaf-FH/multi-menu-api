@@ -13,6 +13,18 @@ export const Errors = {
     message: 'Failed to fetch menu',
   },
 
+  VALIDATION_ERROR: {
+    key: 'VALIDATION_ERROR',
+    code: 400,
+    message: 'Bad Request Error',
+  },
+
+  OFFER_NOT_FOUND: {
+    key: 'OFFER_NOT_FOUND',
+    code: 404, 
+    message: 'Offer Not Found'
+  },
+
   MENU_NOT_FOUND: {
     key: 'MENU_NOT_FOUND',
     code: 404,
