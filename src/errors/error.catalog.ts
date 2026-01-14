@@ -19,6 +19,12 @@ export const Errors = {
     message: 'Bad Request Error',
   },
 
+  OFFER_NOT_FOUND: {
+    key: 'OFFER_NOT_FOUND',
+    code: 404, 
+    message: 'Offer Not Found'
+  },
+
   MENU_NOT_FOUND: {
     key: 'MENU_NOT_FOUND',
     code: 404,

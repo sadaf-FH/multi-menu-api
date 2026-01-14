@@ -5,6 +5,7 @@ export type CreateRestaurantInput = {
   franchise?: string;
   location: string;
   timezone: string;
+  available?: boolean;
 };
 
 export type CreateOfferInput = {

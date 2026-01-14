@@ -1,37 +1,54 @@
-import { UtensilsCrossed, TrendingUp } from 'lucide-react';
-import MenuItem from './MenuItem';
+import { UtensilsCrossed, TrendingUp, Package } from "lucide-react";
+import MenuItem from "./MenuItem";
 
 const CategorySection = ({ category }) => {
+  const availableItems =
+    category.Items?.filter(
+      (item) => item.ItemPrices && item.ItemPrices.length > 0
+    ) || [];
+
+  if (availableItems.length === 0) {
+    return null;
+  }
+
   return (
-    <section className="mb-16 animate-slide-up">
-      <div className="mb-8 relative">
-        <div className="flex items-center gap-4 mb-3">
-          <UtensilsCrossed className="w-8 h-8 text-rust" strokeWidth={1.5} />
-          <h2 className="text-4xl font-display font-bold text-charcoal">
-            {category.name}
-          </h2>
-        </div>
-        
-        <div className="flex items-center gap-6 text-sm text-charcoal/70">
-          <div className="flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-olive" />
-            <span className="font-medium">
-              Average: <span className="text-olive font-semibold">₹{category.avg_price}</span>
-            </span>
+    <section className="mb-8">
+      {/* Category Header */}
+      <div className="bg-red-600 text-white rounded-t-2xl p-6 shadow-lg">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-4">
+            <div className="bg-white/20 p-3 rounded-lg">
+              <UtensilsCrossed className="w-6 h-6" strokeWidth={2} />
+            </div>
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold">
+                {category.name}
+              </h2>
+              <div className="flex items-center gap-4 mt-1 text-red-100 text-sm">
+                <div className="flex items-center gap-1">
+                  <Package className="w-4 h-4" />
+                  <span>
+                    {availableItems.length}{" "}
+                    {availableItems.length === 1 ? "item" : "items"}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>Avg ₹{category.avg_price}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="w-px h-4 bg-charcoal/20"></div>
-          <span className="font-medium">
-            {category.item_count} {category.item_count === 1 ? 'item' : 'items'}
-          </span>
         </div>
-        
-        <div className="absolute -left-8 top-1/2 -translate-y-1/2 w-2 h-24 bg-gradient-to-b from-rust to-olive rounded-full opacity-30"></div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {category.Items?.map((item) => (
-          <MenuItem key={item.item_id} item={item} />
-        ))}
+      {/* Items Grid */}
+      <div className="bg-white rounded-b-2xl p-6 border-x-2 border-b-2 border-red-600 shadow-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {availableItems.map((item) => (
+            <MenuItem key={item.item_id} item={item} />
+          ))}
+        </div>
       </div>
     </section>
   );
