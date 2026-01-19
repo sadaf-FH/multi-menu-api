@@ -1,16 +1,7 @@
-import { UtensilsCrossed, TrendingUp, Package } from "lucide-react";
-import MenuItem from "./MenuItem";
+import { UtensilsCrossed, TrendingUp, Package } from 'lucide-react';
+import MenuItem from './MenuItem';
 
 const CategorySection = ({ category }) => {
-  const availableItems =
-    category.Items?.filter(
-      (item) => item.ItemPrices && item.ItemPrices.length > 0
-    ) || [];
-
-  if (availableItems.length === 0) {
-    return null;
-  }
-
   return (
     <section className="mb-8">
       {/* Category Header */}
@@ -27,10 +18,7 @@ const CategorySection = ({ category }) => {
               <div className="flex items-center gap-4 mt-1 text-red-100 text-sm">
                 <div className="flex items-center gap-1">
                   <Package className="w-4 h-4" />
-                  <span>
-                    {availableItems.length}{" "}
-                    {availableItems.length === 1 ? "item" : "items"}
-                  </span>
+                  <span>{category.item_count} {category.item_count === 1 ? 'item' : 'items'}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <TrendingUp className="w-4 h-4" />
@@ -45,7 +33,7 @@ const CategorySection = ({ category }) => {
       {/* Items Grid */}
       <div className="bg-white rounded-b-2xl p-6 border-x-2 border-b-2 border-red-600 shadow-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {availableItems.map((item) => (
+          {category.Items?.map((item) => (
             <MenuItem key={item.item_id} item={item} />
           ))}
         </div>

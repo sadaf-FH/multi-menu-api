@@ -3,13 +3,30 @@ import { Settings, Eye } from 'lucide-react';
 import RestaurantSelector from './components/RestaurantSelector';
 import MenuView from './pages/MenuView';
 import AdminPanel from './components/AdminPanel';
+import Toast from './components/Toast';
 
 function App() {
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [showAdmin, setShowAdmin] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'info') => {
+    setToast({ message, type });
+  };
+
+  const handleViewMenu = (restaurantId) => {
+    if (!restaurantId) {
+      showToast('⚠️ Please create a restaurant and menu first before viewing', 'error');
+      return;
+    }
+    setSelectedRestaurant(restaurantId);
+    setShowAdmin(false);
+  };
 
   return (
     <div className="min-h-screen">
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+      
       {/* Toggle Button */}
       <button
         onClick={() => {
@@ -33,10 +50,7 @@ function App() {
 
       {/* Content */}
       {showAdmin ? (
-        <AdminPanel onSuccess={(id) => {
-          setSelectedRestaurant(id);
-          setShowAdmin(false);
-        }} />
+        <AdminPanel onSuccess={handleViewMenu} />
       ) : !selectedRestaurant ? (
         <RestaurantSelector onSelect={setSelectedRestaurant} />
       ) : (
