@@ -9,17 +9,21 @@ export const validate =
     try {
       schema.parse(req[property]);
       next();
-    } catch (err: any) {
-      const message = err.errors.map((e: any) => e.message).join(', ');
+    } catch (err: unknown) {
+      if (err instanceof ZodError) {
+        const message = err.issues
+          .map(issue => issue.message)
+          .join(', ');
 
-      next(
-        new AppError({
-          key: Errors.VALIDATION_ERROR.key,
-          code: Errors.VALIDATION_ERROR.code,
-          message,
-        }),
-      );
-      return;
-      next(err);
+        return next(
+          new AppError({
+            key: Errors.VALIDATION_ERROR.key,
+            code: Errors.VALIDATION_ERROR.code,
+            message,
+          })
+        );
+      }
+
+      return next(err);
     }
   };

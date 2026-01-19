@@ -83,8 +83,8 @@ export const MenuDbService = {
     );
   },
 
-  async getMenuByRestaurant(restaurantId: string, currentTime: string) {
-    return MenuRepository.findByRestaurant(restaurantId, currentTime);
+  async getMenuByRestaurant(restaurantId: string) {
+    return MenuRepository.findByRestaurant(restaurantId);
   },
 
   async getRestaurantById(restaurantId: string) {

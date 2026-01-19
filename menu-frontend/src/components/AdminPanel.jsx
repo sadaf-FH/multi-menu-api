@@ -542,7 +542,7 @@ const AdminPanel = ({ onSuccess }) => {
                 )}
 
                 {categories.length > 0 && (
-                  <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-600 shadow-sm">
+                  <div className="bg-blue-50 rounded-xl p-5 border-2 border-blue-600 shadow-lg">
                     <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                       <CheckCircle className="w-5 h-5 text-green-600" />
                       Categories Ready ({categories.length})
@@ -574,6 +574,7 @@ const AdminPanel = ({ onSuccess }) => {
                   </div>
                 )}
 
+                {/* Menu Form */}
                 <div className="bg-gray-50 rounded-lg p-5 border-2 border-gray-300">
                   <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2 text-lg">
                     <Plus className="w-6 h-6 text-red-600"/>
@@ -589,7 +590,7 @@ const AdminPanel = ({ onSuccess }) => {
                           value={newCategory.name} 
                           onChange={e => setNewCategory({...newCategory, name: e.target.value})} 
                           placeholder="e.g., Italian, Chinese, Desserts" 
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none text-base"
+                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none text-base bg-gray-50"
                         />
                       </div>
                       
@@ -600,17 +601,17 @@ const AdminPanel = ({ onSuccess }) => {
                           value={newCategory.avg_price} 
                           onChange={e => setNewCategory({...newCategory, avg_price: e.target.value})} 
                           placeholder="200" 
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none text-base"
+                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none text-base bg-gray-50"
                         />
                       </div>
                     </div>
 
                     {newCategory.items.length > 0 && (
-                      <div className="bg-white rounded-lg p-4 border-2 border-gray-300 shadow-sm">
+                      <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-200 shadow-sm">
                         <h4 className="text-sm font-semibold text-gray-900 mb-3">Items in "{newCategory.name}" ({newCategory.items.length})</h4>
                         <div className="space-y-2 max-h-48 overflow-y-auto">
                           {newCategory.items.map((item, idx) => (
-                            <div key={idx} className="flex justify-between items-start p-3 bg-gray-50 rounded-lg border border-gray-200">
+                            <div key={idx} className="flex justify-between items-start p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
                               <div className="flex-1 min-w-0">
                                 <div className="font-medium text-sm text-gray-900 truncate">{item.name}</div>
                                 <div className="text-xs text-gray-600 mt-1 flex items-center gap-2">
@@ -638,6 +639,7 @@ const AdminPanel = ({ onSuccess }) => {
                       </div>
                     )}
 
+                    {/* Add Item Form */}
                     <div className="bg-white rounded-lg p-5 border-2 border-dashed border-red-400">
                       <h4 className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
                         <Plus className="w-5 h-5 text-red-600"/>Add Item to Category
@@ -651,12 +653,12 @@ const AdminPanel = ({ onSuccess }) => {
                             value={newItem.name} 
                             onChange={e => setNewItem({...newItem, name: e.target.value})} 
                             placeholder="e.g., Margherita Pizza, Chicken Tikka" 
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none text-base"
+                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none text-base bg-white shadow-sm"
                           />
                         </div>
 
                         {/* IMPROVED TIME PICKER SECTION */}
-                        <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-4">
+                        <div className="bg-yellow-100 border-2 border-yellow-500 rounded-lg p-4 shadow-sm">
                           <div className="flex items-center gap-2 mb-3">
                             <Clock className="w-5 h-5 text-yellow-700"/>
                             <h5 className="font-bold text-gray-900">⏰ Availability Hours (Required)</h5>
@@ -670,7 +672,7 @@ const AdminPanel = ({ onSuccess }) => {
                                 type="time" 
                                 value={newItem.available_from} 
                                 onChange={e => setNewItem({...newItem, available_from: e.target.value})} 
-                                className="w-full px-4 py-3 border-2 border-yellow-400 rounded-lg focus:border-red-600 focus:outline-none text-base bg-white"
+                                className="w-full px-4 py-3 border-2 border-yellow-500 rounded-lg focus:border-red-600 focus:outline-none text-base bg-white shadow-sm"
                                 required
                               />
                               <p className="text-xs text-gray-600 mt-1">When it starts</p>
@@ -682,7 +684,7 @@ const AdminPanel = ({ onSuccess }) => {
                                 type="time" 
                                 value={newItem.available_to} 
                                 onChange={e => setNewItem({...newItem, available_to: e.target.value})} 
-                                className="w-full px-4 py-3 border-2 border-yellow-400 rounded-lg focus:border-red-600 focus:outline-none text-base bg-white"
+                                className="w-full px-4 py-3 border-2 border-yellow-500 rounded-lg focus:border-red-600 focus:outline-none text-base bg-white shadow-sm"
                                 required
                               />
                               <p className="text-xs text-gray-600 mt-1">When it ends</p>
@@ -698,7 +700,7 @@ const AdminPanel = ({ onSuccess }) => {
                               value={newItem.price} 
                               onChange={e => setNewItem({...newItem, price: e.target.value})} 
                               placeholder="299" 
-                              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none text-base"
+                              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none text-base bg-white shadow-sm"
                             />
                           </div>
                           
@@ -707,7 +709,7 @@ const AdminPanel = ({ onSuccess }) => {
                             <select 
                               value={newItem.order_type} 
                               onChange={e => setNewItem({...newItem, order_type: e.target.value})} 
-                              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none text-base"
+                              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none text-base bg-white shadow-sm"
                             >
                               <option value="DINE_IN">Dine In</option>
                               <option value="TAKEAWAY">Takeaway</option>
@@ -726,13 +728,13 @@ const AdminPanel = ({ onSuccess }) => {
                       </div>
                     </div>
 
-                    <button 
-                      type="button" 
-                      onClick={addCategoryToMenu} 
-                      className="w-full bg-red-600 text-white py-4 rounded-lg font-semibold hover:bg-red-700 transition-colors text-base shadow-lg"
-                    >
-                      ✓ Save "{newCategory.name || 'Category'}" to Menu
-                    </button>
+                  <button 
+                    type="button" 
+                    onClick={addCategoryToMenu} 
+                    className="w-full bg-red-600 text-white py-4 rounded-lg font-semibold hover:bg-red-700 transition-colors text-base shadow-lg"
+                  >
+                    ✓ Save "{newCategory.name || 'Category'}" to Menu
+                  </button>
                   </div>
                 </div>
 
@@ -745,6 +747,7 @@ const AdminPanel = ({ onSuccess }) => {
                     {loading ? 'Creating Menu...' : <><Save className="w-6 h-6"/>Create Complete Menu ({categories.length} {categories.length===1?'Category':'Categories'}) →</>}
                   </button>
                 )}
+
               </div>
             )}
             {activeTab === 'offer' && (

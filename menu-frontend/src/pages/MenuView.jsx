@@ -16,15 +16,15 @@ const MenuView = ({ restaurantId, onBack }) => {
   if (error) return <ErrorMessage message={error} />;
   if (!menu) return <ErrorMessage message="No menu found for this restaurant" />;
 
-  // Filter out categories with no available items (check both Items array and item_count)
-  const availableCategories = menu.Categories?.filter(cat => {
-    // Check if Items array exists and has items
-    const hasItems = cat.Items && Array.isArray(cat.Items) && cat.Items.length > 0;
-    return hasItems;
-  }) || [];
+  // Show all categories - do NOT filter based on availability
+  const categories = menu.Categories || [];
 
-  // Calculate total items from available categories
-  const totalItems = availableCategories.reduce((sum, cat) => sum + (cat.Items?.length || 0), 0);
+  // Calculate totals - count all items (available and unavailable)
+  const totalItems = categories.reduce((sum, cat) => sum + (cat.Items?.length || 0), 0);
+  const availableItems = categories.reduce((sum, cat) => {
+    const available = cat.Items?.filter(item => item.is_available_now).length || 0;
+    return sum + available;
+  }, 0);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -89,32 +89,33 @@ const MenuView = ({ restaurantId, onBack }) => {
           </div>
           
           <div className="bg-white rounded-xl p-6 border-2 border-red-600 shadow-sm">
-            <div className="text-sm font-medium text-gray-600 mb-1">Available Categories</div>
+            <div className="text-sm font-medium text-gray-600 mb-1">Categories</div>
             <div className="text-3xl font-bold text-red-600">
-              {availableCategories.length}
+              {categories.length}
             </div>
           </div>
           
           <div className="bg-white rounded-xl p-6 border-2 border-red-600 shadow-sm">
-            <div className="text-sm font-medium text-gray-600 mb-1">Available Items</div>
+            <div className="text-sm font-medium text-gray-600 mb-1">Items</div>
             <div className="text-3xl font-bold text-red-600">
-              {totalItems}
+              {availableItems} / {totalItems}
             </div>
+            <div className="text-xs text-gray-500 mt-1">Available / Total</div>
           </div>
         </div>
 
         {/* Categories */}
-        {availableCategories.length > 0 ? (
+        {categories.length > 0 ? (
           <div className="space-y-8">
-            {availableCategories.map((category) => (
+            {categories.map((category) => (
               <CategorySection key={category.category_id} category={category} />
             ))}
           </div>
         ) : (
           <div className="text-center py-16 bg-white rounded-2xl border-2 border-gray-200">
             <Tag className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-xl text-gray-400 font-medium">No items available at this time</p>
-            <p className="text-sm text-gray-500 mt-2">All items are currently outside their availability hours</p>
+            <p className="text-xl text-gray-400 font-medium">No menu items found</p>
+            <p className="text-sm text-gray-500 mt-2">This restaurant has no menu items yet</p>
           </div>
         )}
       </div>

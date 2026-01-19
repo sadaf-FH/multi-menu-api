@@ -2,9 +2,23 @@ import { MenuDbService } from './db/menu.dbservice';
 import { AppError } from '../errors/AppError';
 import { Errors } from '../errors/error.catalog';
 import { DateTime } from 'luxon';
-import { enrichItemPricesWithOffers } from './offerResolver.service';
 import { OfferDbService } from './db/offer.dbservice';
 import { applyBestOffer } from './pricing.service';
+
+const isItemAvailableNow = (
+  availableFrom: string | null,
+  availableTo: string | null,
+  currentTime: string
+): boolean => {
+  if (!availableFrom && !availableTo) return true;
+  if (!availableFrom || !availableTo) return false;
+
+  if (availableFrom <= availableTo) {
+    return currentTime >= availableFrom && currentTime <= availableTo;
+  }
+
+  return currentTime >= availableFrom || currentTime <= availableTo;
+};
 
 export const createMenu = async (data: any) => {
   try {
@@ -28,11 +42,7 @@ export const getMenuWithTimeFilter = async (restaurantId: string) => {
     .setZone(restaurant.timezone)
     .toFormat('HH:mm:ss');
 
-  const menu = await MenuDbService.getMenuByRestaurant(
-    restaurantId,
-    currentTime
-  );
-
+  const menu = await MenuDbService.getMenuByRestaurant(restaurantId);
   if (!menu) throw new AppError(Errors.MENU_NOT_FOUND);
 
   for (const category of menu.Categories ?? []) {
@@ -42,10 +52,17 @@ export const getMenuWithTimeFilter = async (restaurantId: string) => {
     );
 
     for (const item of category.Items ?? []) {
-      const itemOffers = await OfferDbService.getOffersByItem(
-        item.item_id,
+      const availableNow = isItemAvailableNow(
+        item.available_from,
+        item.available_to,
         currentTime
       );
+
+      item.dataValues.is_available_now = availableNow;
+
+      const itemOffers = availableNow
+        ? await OfferDbService.getOffersByItem(item.item_id, currentTime)
+        : [];
 
       const applicableOffers =
         itemOffers.length > 0 ? itemOffers : categoryOffers;
