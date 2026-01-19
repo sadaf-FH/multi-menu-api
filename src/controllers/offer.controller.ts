@@ -23,7 +23,7 @@ export const createOfferController = asyncHandler(async (req: Request, res: Resp
 
 export const getOffersByItemController = asyncHandler(async (req: Request, res: Response) => {
   const restaurant = await RestaurantRepository.findByItemId(req.params.id);
-  if (!restaurant) throw new AppError(Errors.RESTAURANT_NOT_FOUND); 
+  if (!restaurant) throw new AppError(Errors.RESTAURANT_NOT_FOUND);
   const offers = await OfferService.getOffersByItem(req.params.id, restaurant.R_ID);
 
   if (!offers || offers.length === 0) {

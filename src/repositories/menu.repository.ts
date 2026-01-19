@@ -12,21 +12,20 @@ export const MenuRepository = {
   },
 
   async findByRestaurant(restaurantId: string) {
-  return Menu.findOne({
-    where: { R_ID: restaurantId },
-    include: [
-      {
-        model: Category,
-        include: [
-          {
-            model: Item,
-            required: false, 
-            include: [ItemPrice, AddOn],
-          },
-        ],
-      },
-    ],
-  });
-}
-,
+    return Menu.findOne({
+      where: { R_ID: restaurantId },
+      include: [
+        {
+          model: Category,
+          include: [
+            {
+              model: Item,
+              required: false,
+              include: [ItemPrice, AddOn],
+            },
+          ],
+        },
+      ],
+    });
+  },
 };

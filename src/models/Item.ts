@@ -32,7 +32,7 @@ export function initItem(sequelize: Sequelize) {
       name: {
         type: DataTypes.STRING,
         allowNull: true,
-      }
+      },
     },
     {
       sequelize,

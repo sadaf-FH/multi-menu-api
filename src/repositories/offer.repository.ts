@@ -21,7 +21,7 @@ export const OfferRepository = {
       },
     });
   },
-  
+
   findByCategoryId(categoryId: string, time: string) {
     return models.Offer.findAll({
       where: {

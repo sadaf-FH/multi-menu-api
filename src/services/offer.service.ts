@@ -35,7 +35,7 @@ export const createOffer = async (data: CreateOfferInput) => {
     amount: data.amount,
     max_discount: data.max_discount,
     available_from: data.available_from,
-    available_to: data.available_to
+    available_to: data.available_to,
   });
 
   return offer;
@@ -45,10 +45,7 @@ export const getOffersByItem = async (itemId: string, restaurantId: string) => {
   const restaurant = await MenuDbService.getRestaurantById(restaurantId);
   if (!restaurant) throw new AppError(Errors.RESTAURANT_NOT_FOUND);
 
-  const currentTime = DateTime
-    .now()
-    .setZone(restaurant.timezone)
-    .toFormat("HH:mm:ss");
+  const currentTime = DateTime.now().setZone(restaurant.timezone).toFormat('HH:mm:ss');
 
   const offers = await OfferDbService.getOffersByItem(itemId, currentTime);
 
@@ -59,23 +56,13 @@ export const getOffersByItem = async (itemId: string, restaurantId: string) => {
   return offers;
 };
 
-
-export const getOffersByCategory = async (
-  categoryId: string,
-  restaurantId: string
-) => {
+export const getOffersByCategory = async (categoryId: string, restaurantId: string) => {
   const restaurant = await MenuDbService.getRestaurantById(restaurantId);
   if (!restaurant) throw new AppError(Errors.RESTAURANT_NOT_FOUND);
 
-  const currentTime = DateTime
-    .now()
-    .setZone(restaurant.timezone)
-    .toFormat("HH:mm:ss");
+  const currentTime = DateTime.now().setZone(restaurant.timezone).toFormat('HH:mm:ss');
 
-  const offers = await OfferDbService.getOffersByCategory(
-    categoryId,
-    currentTime
-  );
+  const offers = await OfferDbService.getOffersByCategory(categoryId, currentTime);
 
   if (!offers || offers.length === 0) {
     throw new AppError(Errors.OFFER_NOT_FOUND);
@@ -83,4 +70,3 @@ export const getOffersByCategory = async (
 
   return offers;
 };
-

@@ -33,12 +33,13 @@ export const MenuDbService = {
         );
 
         for (const itm of cat.items) {
-          const item = await ItemRepository.create({
-            category_id: category.category_id,
-            name: itm.name,
-            available_from: itm.time?.available_from ?? null,
-            available_to: itm.time?.available_to ?? null,
-            }, 
+          const item = await ItemRepository.create(
+            {
+              category_id: category.category_id,
+              name: itm.name,
+              available_from: itm.time?.available_from ?? null,
+              available_to: itm.time?.available_to ?? null,
+            },
             t,
           );
 

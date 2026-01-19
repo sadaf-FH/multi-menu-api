@@ -21,8 +21,8 @@ export const Errors = {
 
   OFFER_NOT_FOUND: {
     key: 'OFFER_NOT_FOUND',
-    code: 404, 
-    message: 'Offer Not Found'
+    code: 404,
+    message: 'Offer Not Found',
   },
 
   MENU_NOT_FOUND: {
