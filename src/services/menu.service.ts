@@ -25,11 +25,7 @@ export const createMenu = async (data: any) => {
     const menu = await MenuDbService.createMenuWithCategoriesAndItems(data);
     return menu;
   } catch (err: any) {
-    throw new AppError({
-      key: Errors.MENU_CREATION_FAILURE.key,
-      code: Errors.MENU_CREATION_FAILURE.code,
-      message: err.message || Errors.MENU_CREATION_FAILURE.message,
-    });
+    throw new AppError(Errors.MENU_CREATION_FAILURE);
   }
 };
 

@@ -21,11 +21,7 @@ export const createOffer = async (data: CreateOfferInput) => {
   }
 
   if (data.type === OfferType.PERCENT && data.amount > 100) {
-    throw new AppError({
-      key: Errors.INVALID_OFFER_TYPE.key,
-      code: Errors.INVALID_OFFER_TYPE.code,
-      message: Errors.INVALID_OFFER_TYPE.message,
-    });
+    throw new AppError(Errors.INVALID_OFFER_TYPE);
   }
 
   const offer = await OfferDbService.createOffer({

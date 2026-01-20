@@ -14,11 +14,7 @@ export const createRestaurant = async (data: CreateRestaurantInput) => {
     const restaurant = await RestaurantDbService.createRestaurant(data);
     return restaurant;
   } catch (err: any) {
-    throw new AppError({
-      key: Errors.RESTAURANT_CREATION_FAILURE.key,
-      code: Errors.RESTAURANT_CREATION_FAILURE.code,
-      message: err.message || Errors.RESTAURANT_CREATION_FAILURE.message,
-    });
+    throw new AppError(Errors.RESTAURANT_CREATION_FAILURE);
   }
 };
 

@@ -14,11 +14,7 @@ export const validate =
         const message = err.issues.map((issue) => issue.message).join(', ');
 
         return next(
-          new AppError({
-            key: Errors.VALIDATION_ERROR.key,
-            code: Errors.VALIDATION_ERROR.code,
-            message,
-          }),
+          new AppError(Errors.VALIDATION_ERROR),
         );
       }
 
