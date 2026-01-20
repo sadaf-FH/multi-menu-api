@@ -42,6 +42,12 @@ export function initOffer(sequelize: Sequelize) {
       modelName: 'Offer',
       tableName: 'Offers',
       timestamps: true,
+      indexes: [
+        { fields: ['item_id'] },
+        { fields: ['category_id'] },
+        { fields: ['item_id', 'available_from', 'available_to'] },
+        { fields: ['category_id', 'available_from', 'available_to'] },
+      ]
     },
   );
   return Offer;

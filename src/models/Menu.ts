@@ -28,6 +28,10 @@ export function initMenu(sequelize: Sequelize) {
       modelName: 'Menu',
       tableName: 'Menus',
       timestamps: true,
+      indexes: [
+        { fields: ['R_ID'] },
+        { fields: ['R_ID', 'version'] }, 
+      ]
     },
   );
 

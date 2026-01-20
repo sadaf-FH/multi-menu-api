@@ -22,6 +22,10 @@ export function initItemPrice(sequelize: Sequelize) {
       modelName: 'ItemPrice',
       tableName: 'ItemPrices',
       timestamps: true,
+      indexes: [
+        { fields: ['item_id'] },
+        { fields: ['item_id', 'order_type'], unique: true },
+      ]
     },
   );
   return ItemPrice;

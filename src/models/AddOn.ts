@@ -20,6 +20,9 @@ export function initAddOn(sequelize: Sequelize) {
       modelName: 'AddOn',
       tableName: 'AddOns',
       timestamps: true,
+      indexes: [
+        { fields: ['item_id'], unique: true },
+      ]
     },
   );
   return AddOn;
