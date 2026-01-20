@@ -39,6 +39,10 @@ export function initItem(sequelize: Sequelize) {
       modelName: 'Item',
       tableName: 'Items',
       timestamps: true,
+      indexes: [
+        { fields: ['category_id'] },
+        { fields: ['category_id', 'available_from', 'available_to'] },
+      ]
     },
   );
   return Item;

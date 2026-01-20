@@ -29,6 +29,10 @@ export function initCategory(sequelize: Sequelize) {
       modelName: 'Category',
       tableName: 'Categories',
       timestamps: true,
+      indexes: [
+        { fields: ['menu_id'] },
+        { fields: ['menu_id', 'name'] },
+      ]
     },
   );
   return Category;
