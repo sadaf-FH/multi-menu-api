@@ -713,7 +713,6 @@ const AdminPanel = ({ onSuccess }) => {
                             >
                               <option value="DINE_IN">Dine In</option>
                               <option value="TAKEAWAY">Takeaway</option>
-                              <option value="DELIVERY">Delivery</option>
                             </select>
                           </div>
                         </div>
