@@ -48,6 +48,7 @@ describe('Restaurant Service', () => {
       const minimalData = {
         name: 'Minimal Restaurant',
         location: 'Minimal Location',
+        timezone: 'Asia/Kolkata'
       };
 
       const mockMinimalRestaurant = {
@@ -113,7 +114,7 @@ describe('Restaurant Service', () => {
     it('handles null franchise value', async () => {
       const dataWithNullFranchise = {
         name: 'Independent Restaurant',
-        franchise: null,
+        franchise: undefined,
         location: 'Downtown',
         timezone: 'America/New_York',
       };
@@ -131,7 +132,7 @@ describe('Restaurant Service', () => {
 
       const result = await createRestaurant(dataWithNullFranchise);
 
-      expect(result.franchise).toBeNull();
+      expect(result.franchise).toBeUndefined();
       expect(RestaurantDbService.createRestaurant).toHaveBeenCalledWith(
         dataWithNullFranchise,
       );

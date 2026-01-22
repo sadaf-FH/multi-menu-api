@@ -13,7 +13,9 @@ export type CreateOfferInput = {
   category_id?: string;
   type: OfferType;
   amount: number;
-  max_discount: number;
+  max_discount?: number;
+  available_from: string;
+  available_to: string;
 };
 
 export type ItemTimezoneRow = {

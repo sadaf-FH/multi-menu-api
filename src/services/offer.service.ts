@@ -4,16 +4,7 @@ import { Errors } from '../errors/error.catalog';
 import { OfferType } from '../utils/constants';
 import { MenuDbService } from './db/menu.dbservice';
 import { DateTime } from 'luxon';
-
-type CreateOfferInput = {
-  item_id?: string;
-  category_id?: string;
-  type: OfferType;
-  amount: number;
-  max_discount?: number;
-  available_from: string;
-  available_to: string;
-};
+import { CreateOfferInput } from '../utils/types';
 
 export const createOffer = async (data: CreateOfferInput) => {
   if (!data.item_id && !data.category_id) {

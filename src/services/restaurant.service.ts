@@ -1,13 +1,7 @@
 import { RestaurantDbService } from './db/restaurant.dbservice';
 import { AppError } from '../errors/AppError';
 import { Errors } from '../errors/error.catalog';
-
-type CreateRestaurantInput = {
-  name: string;
-  franchise?: string | null;
-  location: string;
-  timezone?: string;
-};
+import { CreateRestaurantInput } from '../utils/types';
 
 export const createRestaurant = async (data: CreateRestaurantInput) => {
   try {
